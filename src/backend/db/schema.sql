@@ -23,11 +23,37 @@ CREATE TABLE IF NOT EXISTS study_plans (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS jobs (
+CREATE TABLE IF NOT EXISTS study_materials (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
-  company TEXT NOT NULL,
-  description TEXT NOT NULL,
-  requirements TEXT,
-  posted_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  description TEXT,
+  link TEXT NOT NULL,
+  category TEXT NOT NULL,
+  uploaded_by INTEGER,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS assessments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  description TEXT,
+  questions_json TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS assessment_results (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  assessment_id INTEGER,
+  score INTEGER,
+  total_score INTEGER,
+  completed_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS calendar_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  event_date DATE NOT NULL,
+  event_type TEXT CHECK(event_type IN ('exam', 'holiday', 'event', 'deadline')) NOT NULL,
+  description TEXT
 );

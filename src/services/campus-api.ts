@@ -55,6 +55,40 @@ export const campusApi = {
     return res.json();
   },
 
+  // Study Materials
+  getStudyMaterials: async () => {
+    const res = await fetch(`${API_BASE}/study-materials`);
+    return res.json();
+  },
+  postStudyMaterial: async (material: any) => {
+    const res = await fetch(`${API_BASE}/study-materials`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(material),
+    });
+    return res.json();
+  },
+
+  // Assessments
+  getAssessments: async () => {
+    const res = await fetch(`${API_BASE}/assessments`);
+    return res.json();
+  },
+  submitAssessmentResult: async (result: any) => {
+    const res = await fetch(`${API_BASE}/assessment-results`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(result),
+    });
+    return res.json();
+  },
+
+  // Calendar
+  getCalendarEvents: async () => {
+    const res = await fetch(`${API_BASE}/calendar-events`);
+    return res.json();
+  },
+  
   // AI Agent
   getGenAIModel: () => {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Terminal, BookOpen, Bell, Briefcase, Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
+import { Terminal, BookOpen, Bell, Briefcase, Menu, X, LogOut, LayoutDashboard, FileText, Award, Calendar } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useAuth } from '../context/AuthContext';
 
@@ -18,6 +18,9 @@ export default function Layout() {
     { to: "/", icon: LayoutDashboard, label: "DASHBOARD", roles: ['student', 'faculty', 'admin'] },
     { to: "/notices", icon: Bell, label: "NOTICES", roles: ['student', 'faculty', 'admin'] },
     { to: "/study-plan", icon: BookOpen, label: "STUDY PLAN", roles: ['student'] },
+    { to: "/materials", icon: FileText, label: "RESOURCES", roles: ['student', 'faculty'] },
+    { to: "/assessment", icon: Award, label: "SKILLS", roles: ['student'] },
+    { to: "/calendar", icon: Calendar, label: "CALENDAR", roles: ['student', 'faculty', 'admin'] },
     { to: "/placement", icon: Briefcase, label: "PLACEMENT", roles: ['student'] },
   ].filter(item => item.roles.includes(user?.role || ''));
 

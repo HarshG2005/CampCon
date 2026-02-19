@@ -59,6 +59,45 @@ export function createCampusRoutes(db: Database.Database, aiService: CampusAISer
     res.json({ success: result.changes > 0 });
   });
 
+  // --- Study Materials ---
+  router.get('/study-materials', (req, res) => {
+    const materials = db.prepare("SELECT * FROM study_materials ORDER BY created_at DESC").all();
+    res.json(materials);
+  });
+
+  router.post('/study-materials', (req, res) => {
+    const { title, description, link, category, uploaded_by } = req.body;
+    const result = db.prepare(
+      "INSERT INTO study_materials (title, description, link, category, uploaded_by) VALUES (?, ?, ?, ?, ?)"
+    ).run(title, description, link, category, uploaded_by || 1);
+    res.json({ id: result.lastInsertRowid, success: true });
+  });
+
+  // --- Assessments ---
+  router.get('/assessments', (req, res) => {
+    const assessments = db.prepare("SELECT * FROM assessments").all();
+    // Parse JSON questions
+    const parsed = assessments.map((a: any) => ({
+      ...a,
+      questions: JSON.parse(a.questions_json)
+    }));
+    res.json(parsed);
+  });
+
+  router.post('/assessment-results', (req, res) => {
+    const { user_id, assessment_id, score, total_score } = req.body;
+    const result = db.prepare(
+      "INSERT INTO assessment_results (user_id, assessment_id, score, total_score) VALUES (?, ?, ?, ?)"
+    ).run(user_id || 1, assessment_id, score, total_score);
+    res.json({ id: result.lastInsertRowid, success: true });
+  });
+
+  // --- Calendar ---
+  router.get('/calendar-events', (req, res) => {
+    const events = db.prepare("SELECT * FROM calendar_events ORDER BY event_date ASC").all();
+    res.json(events);
+  });
+
   // --- AI Features (Backend Proxy) ---
   
   // 1. Generate Study Plan

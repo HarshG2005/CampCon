@@ -11,6 +11,9 @@ import Notices from './pages/Notices';
 import StudyPlan from './pages/StudyPlan';
 import Placement from './pages/Placement';
 import Login from './pages/Login';
+import StudyMaterial from './pages/StudyMaterial';
+import SkillAssessment from './pages/SkillAssessment';
+import AcademicCalendar from './pages/AcademicCalendar';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 function ProtectedRoute() {
@@ -31,6 +34,9 @@ export default function App() {
               <Route index element={<Dashboard />} />
               <Route path="notices" element={<Notices />} />
               <Route path="study-plan" element={<StudyPlan />} />
+              <Route path="materials" element={<StudyMaterial />} />
+              <Route path="assessment" element={<SkillAssessment />} />
+              <Route path="calendar" element={<AcademicCalendar />} />
               <Route path="placement" element={<Placement />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>

@@ -25,6 +25,45 @@ export interface StudyPlan {
   created_at?: string;
 }
 
+export interface StudyMaterial {
+  id?: number;
+  title: string;
+  description: string;
+  link: string;
+  category: string;
+  uploaded_by?: number;
+  created_at?: string;
+}
+
+export interface Assessment {
+  id?: number;
+  title: string;
+  description: string;
+  questions: {
+    id: number;
+    text: string;
+    options: string[];
+    correctAnswer: number; // index
+  }[];
+}
+
+export interface AssessmentResult {
+  id?: number;
+  user_id: number;
+  assessment_id: number;
+  score: number;
+  total_score: number;
+  completed_at?: string;
+}
+
+export interface CalendarEvent {
+  id?: number;
+  title: string;
+  event_date: string;
+  event_type: 'exam' | 'holiday' | 'event' | 'deadline';
+  description: string;
+}
+
 export interface AgentMessage {
   role: 'user' | 'model';
   text: string;

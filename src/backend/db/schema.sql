@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
-  role TEXT CHECK(role IN ('student', 'admin')) NOT NULL DEFAULT 'student'
+  role TEXT CHECK(role IN ('student', 'admin', 'faculty')) NOT NULL DEFAULT 'student'
 );
 
 CREATE TABLE IF NOT EXISTS notices (
@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS notices (
   title TEXT NOT NULL,
   content TEXT NOT NULL,
   posted_by INTEGER,
+  category TEXT CHECK(category IN ('admin', 'student')) NOT NULL DEFAULT 'admin',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   sent_via_email BOOLEAN DEFAULT 0
 );

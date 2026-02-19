@@ -9,11 +9,18 @@ export const campusApi = {
     return res.json();
   },
   
-  postNotice: async (notice: { title: string; content: string; send_email: boolean }) => {
+  postNotice: async (notice: { title: string; content: string; send_email: boolean; category: 'admin' | 'student' }) => {
     const res = await fetch(`${API_BASE}/notices`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(notice),
+    });
+    return res.json();
+  },
+
+  deleteNotice: async (id: number) => {
+    const res = await fetch(`${API_BASE}/notices/${id}`, {
+      method: 'DELETE',
     });
     return res.json();
   },
@@ -31,6 +38,20 @@ export const campusApi = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(plan),
     });
+    return res.json();
+  },
+
+  updateStudyPlan: async (id: number, plan_json: any) => {
+    const res = await fetch(`${API_BASE}/study-plans/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan_json }),
+    });
+    return res.json();
+  },
+
+  getStudyPlans: async () => {
+    const res = await fetch(`${API_BASE}/study-plans`);
     return res.json();
   },
 

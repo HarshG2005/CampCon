@@ -3,6 +3,7 @@ export interface Notice {
   title: string;
   content: string;
   posted_by?: number;
+  category: 'admin' | 'student';
   created_at?: string;
   sent_via_email: boolean;
 }

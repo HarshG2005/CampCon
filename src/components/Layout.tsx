@@ -1,17 +1,25 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { Terminal, BookOpen, Bell, Briefcase, Menu, X } from 'lucide-react';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Terminal, BookOpen, Bell, Briefcase, Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
 import { clsx } from 'clsx';
+import { useAuth } from '../context/AuthContext';
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const navItems = [
-    { to: "/", icon: Terminal, label: "AGENT" },
-    { to: "/notices", icon: Bell, label: "NOTICES" },
-    { to: "/study-plan", icon: BookOpen, label: "STUDY PLAN" },
-    { to: "/placement", icon: Briefcase, label: "PLACEMENT" },
-  ];
+    { to: "/", icon: LayoutDashboard, label: "DASHBOARD", roles: ['student', 'faculty', 'admin'] },
+    { to: "/notices", icon: Bell, label: "NOTICES", roles: ['student', 'faculty', 'admin'] },
+    { to: "/study-plan", icon: BookOpen, label: "STUDY PLAN", roles: ['student'] },
+    { to: "/placement", icon: Briefcase, label: "PLACEMENT", roles: ['student'] },
+  ].filter(item => item.roles.includes(user?.role || ''));
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[#F0F0F0]">
@@ -41,13 +49,20 @@ export default function Layout() {
         </nav>
 
         <div className="p-4 border-t-2 border-black bg-gray-100">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 bg-blue-700 rounded-full border-2 border-black"></div>
-            <div>
-              <p className="font-bold text-sm">USER_01</p>
-              <p className="text-xs font-mono text-gray-500">STUDENT</p>
+            <div className="overflow-hidden">
+              <p className="font-bold text-sm truncate">{user?.name.toUpperCase()}</p>
+              <p className="text-xs font-mono text-gray-500">{user?.role.toUpperCase()}</p>
             </div>
           </div>
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm font-mono font-bold text-red-600 border-2 border-transparent hover:border-red-600 hover:bg-red-50 transition-all"
+          >
+            <LogOut className="w-4 h-4" />
+            LOGOUT
+          </button>
         </div>
       </aside>
 
@@ -76,6 +91,13 @@ export default function Layout() {
               {item.label}
             </NavLink>
           ))}
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-4 font-mono font-bold border-2 border-red-600 text-red-600"
+          >
+            <LogOut className="w-5 h-5" />
+            LOGOUT
+          </button>
         </div>
       )}
 

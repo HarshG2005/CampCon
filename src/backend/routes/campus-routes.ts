@@ -12,16 +12,22 @@ export function createCampusRoutes(db: Database.Database, aiService: CampusAISer
   });
 
   router.post('/notices', (req, res) => {
-    const { title, content, posted_by, send_email } = req.body;
+    const { title, content, posted_by, send_email, category } = req.body;
     const result = db.prepare(
-      "INSERT INTO notices (title, content, posted_by, sent_via_email) VALUES (?, ?, ?, ?)"
-    ).run(title, content, posted_by || 1, send_email ? 1 : 0);
+      "INSERT INTO notices (title, content, posted_by, sent_via_email, category) VALUES (?, ?, ?, ?, ?)"
+    ).run(title, content, posted_by || 1, send_email ? 1 : 0, category || 'admin');
     
     if (send_email) {
       console.log(`[EMAIL SERVICE] Sending notice "${title}" to all students...`);
     }
     
     res.json({ id: result.lastInsertRowid, success: true });
+  });
+
+  router.delete('/notices/:id', (req, res) => {
+    const { id } = req.params;
+    const result = db.prepare("DELETE FROM notices WHERE id = ?").run(id);
+    res.json({ success: result.changes > 0 });
   });
 
   // --- Jobs ---
@@ -42,6 +48,15 @@ export function createCampusRoutes(db: Database.Database, aiService: CampusAISer
       "INSERT INTO study_plans (user_id, subject, plan_json) VALUES (?, ?, ?)"
     ).run(user_id || 2, subject, JSON.stringify(plan_json));
     res.json({ id: result.lastInsertRowid, success: true });
+  });
+
+  router.put('/study-plans/:id', (req, res) => {
+    const { id } = req.params;
+    const { plan_json } = req.body;
+    const result = db.prepare(
+      "UPDATE study_plans SET plan_json = ? WHERE id = ?"
+    ).run(JSON.stringify(plan_json), id);
+    res.json({ success: result.changes > 0 });
   });
 
   // --- AI Features (Backend Proxy) ---

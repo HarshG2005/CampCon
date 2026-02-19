@@ -17,8 +17,9 @@ db.exec(schema);
 // Seed some data if empty
 const userCount = db.prepare("SELECT count(*) as count FROM users").get() as { count: number };
 if (userCount.count === 0) {
-  db.prepare("INSERT INTO users (name, email, role) VALUES (?, ?, ?)").run("Admin User", "admin@campus.edu", "admin");
-  db.prepare("INSERT INTO users (name, email, role) VALUES (?, ?, ?)").run("Student User", "student@campus.edu", "student");
+  db.prepare("INSERT INTO users (name, email, role) VALUES (?, ?, ?)").run("System Admin", "admin@campus.edu", "admin");
+  db.prepare("INSERT INTO users (name, email, role) VALUES (?, ?, ?)").run("Dr. Faculty", "faculty@campus.edu", "faculty");
+  db.prepare("INSERT INTO users (name, email, role) VALUES (?, ?, ?)").run("John Student", "student@campus.edu", "student");
   
   db.prepare("INSERT INTO jobs (title, company, description, requirements) VALUES (?, ?, ?, ?)").run(
     "Software Engineer Intern",
